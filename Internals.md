@@ -1,6 +1,6 @@
 # Internals
 
-The core of rendering operations is the `Renderer` class, it contains all the caches, state and function to render frames.
+The core of rendering operations is the `Renderer` class, it contains all the caches, state and functions to render frames.
 
 ## Renderer
 
@@ -86,7 +86,7 @@ Each `RenderStep` might render one or multiple `Drawables` from a `DrawQueue` sp
 
 The result is a `PipelineDrawableCache` containing a `map<Hash128, PipelineDrawables>`. Each key corresponds to a unique `WGPURenderPipeline`, the value contains the list of `drawables` belonging to this pipeline.
 
-Additionaly the drawables are sorted and batched per-pipeline inside `sortAndBatchDrawables`. For example, Drawables using the same texture bindings & meshes are batched.
+Additionaly, inside `sortAndBatchDrawables`, `Drawables` are sorted and ones using the same texture bindings & meshes are grouped together.
 
 > This would be the place to perform CPU side frustum culling too
 
