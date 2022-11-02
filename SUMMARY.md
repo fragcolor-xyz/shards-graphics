@@ -1,4 +1,4 @@
 # Table of contents
 
-* [User API](User_API.md)
+* [User API](README.md)
 * [Internals](Internals.md)

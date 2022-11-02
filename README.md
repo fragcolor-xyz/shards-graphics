@@ -28,13 +28,11 @@ They can contain the follow:
 * `Parameter` definitions
 * Shader `entry points`
 
-`Features` can be applied to an entire frame, a single render pass or even individual `drawables`.
-This way they represent a common interface for modifying the render pipeline at multiple levels.
+`Features` can be applied to an entire frame, a single render pass or even individual `drawables`. This way they represent a common interface for modifying the render pipeline at multiple levels.
 
 ## Parameter definitions
 
-`Features` may contain `parameter` definitions.
-Every drawable can have their own set of `parameters`. `Parameters` are passed to the GPU as buffers and texture bindings per drawable.
+`Features` may contain `parameter` definitions. Every drawable can have their own set of `parameters`. `Parameters` are passed to the GPU as buffers and texture bindings per drawable.
 
 `Parameters` need to be defined in a feature before they are available within shader `entry points`.
 
@@ -136,8 +134,7 @@ An `EffectPass` takes outputs from previous render steps and applies fullscreen 
 
 ### Implicit input/outputs
 
-When not specified, render steps have some implicit inputs/outputs defined.
+When not specified, render steps have some implicit inputs/outputs defined:
 
-`DrawablesPasses` have a `"color"` and `"depth"` (depth buffer) output
-
-`EffectPasses` have a `"color"` input and output
+* `DrawablesPasses` have a `"color"` and `"depth"` (depth buffer) output
+* `EffectPasses` have a `"color"` input and output
