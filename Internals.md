@@ -236,6 +236,34 @@ static void translate(TShard *shard, TranslationContext &context) {}
 
 where TShard is the shard type. They are registered using `REGISTER_EXTERNAL_SHADER_SHARD(TranslatorClass, "Name", ShardClass)`
 
+### Blocks
+
+`std::unique_ptr<IWGSLGenerated>` and it's main implementation `WGSLBlock` are used to pass around shader code blocks annotated with a shader `FieldType`
+
+They are used for shard input/outputs, usually their values are not used in the generated shader by itself unless they are added to the currently generated block (`TranslationContext.addNew/enterNew`)
+
+The translator keeps track of a value called `WGSLTop`, it is used to track shard input/outputs. Whenever a shard needs the output from the previous shards it uses this value.\
+Whenever a shards writes an output, it sets this value.
+
+The `WGSLTop` value is never added to the currently generated block directly, only passed around until a shard decides to use it in some way.\
+An exception to this is `setWGSLTopVar` which will store the value given in a temporary variable and return it's reference as `IWGSLGenerated`\
+``This is used by binary operators for example, so that their ordering is correct
+
 ### Shard matching
 
 During translation shards are matched to their registered translator by name, to receive the actual shard instance to pass to the translator, each of the external shards are assumed to be registered using `ShardWrapper` or it's macros.
+
+### Wire Translation
+
+Whenever an untranslated wire is found - within (Do) for example - it is converted to a WGSL function so it can be reused.
+
+For non-pure wires, referenced variables that are read from are converted to function arguments.
+
+The input to the wire is converted to a function argument as well
+
+### Automatic matrix type conversion
+
+Whenver the translator encounters operations on sequences (e.g. Push) it will store the result inside a "virtual sequence" (VirtualSeq)\
+Whenever the value of the sequence is read it is then converted by `TranslationContext::tryExpandIntoVariable` which checks the element type and sequence length to generate a matrix type.
+
+For example a sequence of 3 Float4s will convert to a `mat4x3<f32>`
